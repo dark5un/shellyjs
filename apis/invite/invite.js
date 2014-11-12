@@ -78,7 +78,6 @@ Invite.accept = function (req, res, cb) {
   var linkType = chParts[0];
   var linkTo = chParts[1];
   var gameName = chParts[2];
-  console.log("accpetLink", fromUid, linkType, linkTo, gameName);
 
   if (req.session.uid === fromUid) {
     res.add(sh.error("challenge-user", "you cannot accept your own challenge"));
@@ -212,7 +211,6 @@ function sendEmail(req, res, cb) {
   var secret = sh.uuid();
 
   var sendId = linkType + ":" + linkTo + ":" + req.body.game;
-  console.log("SWD", sendId);
   var sentSet = new ShHash("invites:" + req.session.uid);
   sentSet.get(sendId, _w(cb, function (err, data) {
     if (!err && data) {

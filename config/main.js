@@ -83,13 +83,13 @@ global.CDEF("EMAIL_NOSEND", false);
 global.CDEF("EMAIL_SENDTO", "");
 global.CDEF("EMAIL_QUEUE", true);
 global.CDEF("EMAIL_QUEUE_RETRIES", 2);
-global.CDEF("EMAIL_DEFAULT_FROM", "Game Shelly <shelly@gameshelly.com>");
+global.CDEF("EMAIL_DEFAULT_FROM", "Game Shelly <shellyjs@yahoo.com>");
 global.CDEF("EMAIL_TRANSPORT", "SMTP");
-global.CDEF("EMAIL_TRANSPORT_SERVICE", {service: "Gmail", auth: {user: "shelly8804@gmail.com", pass: "foofoofoo"}});
+// nodemailer is unhappy with gmail
+//global.CDEF("EMAIL_TRANSPORT_SERVICE", {service: "Gmail", auth: {user: "shelly8804@gmail.com", pass: "zoozoozoo"}});
+global.CDEF("EMAIL_TRANSPORT_SERVICE", {service: "Yahoo", auth: {user: "shellyjs@yahoo.com", pass: "foofoofoo"}});
 //global.CDEF("EMAIL_TRANSPORT", "SES");
 //global.CDEF("EMAIL_TRANSPORT_SERVICE", {AWSAccessKeyID: "XXXX", AWSSecretKey: "XXXX"});
-//global.CDEF("EMAIL_TRANSPORT", "SMTP");
-//global.CDEF("EMAIL_TRANSPORT_SERVICE", {service: "Postmark", auth: {user: "XXXX", pass: "XXXX"}});
 
 // location of server uuid that identifies server in cluster
 global.CDEF("SERVER_TAG_FN", global.C.CONFIG_DIR + "/server.json");

@@ -14,6 +14,7 @@ global.CDEF("LOG_MODULES", {"shelly": 1,
   "notify": 0,
   "shmatcher": 0,
   "recv": 0,
+  "shmail": 1,
   "SWD": 1});
 
 //global.CDEF("DB_WRAPPER", global.C.BASE_DIR + "/lib/db/shredis.js");
