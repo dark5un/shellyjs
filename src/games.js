@@ -1,4 +1,6 @@
 var express = require("express");
+var cookieParser = require('cookie-parser');
+var favicon = require('serve-favicon');
 var os = require("os");
 var fs = require("fs");
 var path = require("path");
@@ -19,13 +21,13 @@ var gamesStatic = gamesBase + "/static";
 shlog.info("games", "games directory: " + gamesBase);
 
 var app = express();
-app.use(express.favicon(gamesStatic + "/images/favicon.ico"));
+app.use(favicon(gamesStatic + "/images/favicon.ico"));
 //app.enable("view cache");  // disable this for dev
 app.set("views", gamesBase);
 app.engine("html", engines.ejs);
 app.use("/common", express.static(commonStatic));
 app.use("/static", express.static(gamesStatic));
-app.use(express.cookieParser());
+app.use(cookieParser());
 app.use(function (req, res, next) {
   if (req.path.substring(0, 5) === "/reg/") {
     return next();

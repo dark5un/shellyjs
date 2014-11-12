@@ -1,4 +1,5 @@
 var express = require("express");
+var favicon = require('serve-favicon');
 var os = require("os");
 var fs = require("fs");
 var path = require("path");
@@ -48,7 +49,7 @@ shlog.system("docs", "docs port: " + global.C.DOCS_PORT);
 shlog.system("docs", "docs directory: " + docsBase);
 
 var app = express();
-app.use(express.favicon(docsStatic + "/images/favicon.ico"));
+app.use(favicon(docsStatic + "/images/favicon.ico"));
 //app.enable("view cache");  // disable this for dev
 app.set("views", docsBase);
 app.engine("html", engines.ejs);

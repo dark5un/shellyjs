@@ -1,4 +1,6 @@
 var express = require("express");
+var cookieParser = require('cookie-parser');
+var favicon = require('serve-favicon');
 var os = require("os");
 var fs = require("fs");
 var path = require("path");
@@ -30,14 +32,14 @@ reg.verifyUser(loader, global.C.DEFAULT_ADMIN_NAME, global.C.DEFAULT_ADMIN_PASSW
 });
 
 var app = express();
-app.use(express.favicon(adminStatic + "/images/favicon.ico"));
+app.use(favicon(adminStatic + "/images/favicon.ico"));
 //app.enable("view cache");  // disable this for dev
 app.set("views", adminBase);
 app.engine("html", engines.ejs);
 app.use("/common", express.static(commonStatic));
 app.use("/static", express.static(adminStatic));
 app.use("/docs", express.static(global.C.BASE_DIR + "/www/docs"));
-app.use(express.cookieParser());
+app.use(cookieParser());
 
 app.use(function (req, res, next) {
   if (req.path.substring(0, 5) === "/reg/"

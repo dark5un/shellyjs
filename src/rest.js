@@ -1,4 +1,6 @@
 var express = require("express");
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 var async = require("async");
 var _ = require("lodash");
 
@@ -15,8 +17,8 @@ var ShRes = require(global.C.BASE_DIR + "/lib/shres.js");
 var rest = express();
 
 rest.use(sh.expressCrossDomain);
-rest.use(express.bodyParser());
-rest.use(express.cookieParser());
+rest.use(bodyParser.json());
+rest.use(cookieParser());
 
 rest.use(function (req, res, next) {
   shlog.info("rest", "session check");

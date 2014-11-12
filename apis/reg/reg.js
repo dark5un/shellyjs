@@ -2,9 +2,7 @@ var util = require("util");
 var crypto = require("crypto");
 var querystring = require("querystring");
 var _ = require("lodash");
-var check = require("validator").check;
-var sanitize = require("validator").sanitize;
-
+var validator = require("validator");
 
 var shlog = require(global.C.BASE_DIR + "/lib/shlog.js");
 var sh = require(global.C.BASE_DIR + "/lib/shutil.js");
@@ -138,18 +136,18 @@ exports.findUserByToken = function (loader, token, cb) {
 
 exports.login = function (req, res, cb) {
 
-  var email = sanitize(req.body.email).trim();
-  var password = sanitize(req.body.password).trim();
+  var email = validator.trim(req.body.email);
+  var password = validator.trim(req.body.password);
   shlog.info("reg", "login attempt:", email);
   try {
     if (email !== global.C.DEFAULT_ADMIN_NAME) {
-      check(email, 102).isEmail();
+      validator.isEmail(email);
     }
   } catch (e) {
     res.add(sh.error("email-bad", "email is not correct format"));
     return cb(1);
   }
-  var role = sanitize(req.body.role).trim();
+  var role = validator.trim(req.body.role);
 
   req.loader.exists("kEmailMap", email, _w(cb, function (error, em) {
     if (error) {
@@ -205,11 +203,11 @@ exports.anonymous = function (req, res, cb) {
     return cb(1);
   }
 
-  var token = sanitize(req.body.token).trim();
+  var token = validator.trim(req.body.token);
   try {
-    check(token, "token not long enough").len(6);
+    validator.isLength(token, 6);
   } catch (e) {
-    res.add(sh.error("param-bad", "token not valid", {info: e.message}));
+    res.add(sh.error("param-bad", "token not valid", {info: "token not long enough"}));
     return cb(1);
   }
 
@@ -239,7 +237,7 @@ exports.anonymous = function (req, res, cb) {
 };
 
 exports.check = function (req, res, cb) {
-  var email = sanitize(req.body.email).trim();
+  var email = validator.trim(req.body.email);
 
   req.loader.exists("kEmailMap", email, _w(cb, function (error, em) {
     if (error) {
@@ -269,13 +267,14 @@ function sendUpgradeEmail(em, password, req, res) {
 }
 
 exports.upgrade = function (req, res, cb) {
-  var email = sanitize(req.body.email).trim();
-  var password = sanitize(req.body.password).trim();
-  try {
-    check(email, "invalid email address").isEmail();
-    check(password, "password too short").len(6);
-  } catch (e) {
-    res.add(sh.error("param-bad", e.message, {info: e.message}));
+  var email = validator.trim(req.body.email);
+  var password = validator.trim(req.body.password);
+  if (!validator.isEmail(email)) {
+    res.add(sh.error("param-bad", "invalid email address", {info: req.body.email}));
+    return cb(1);
+  }
+  if (!validator.isLength(password, 6)) {
+    res.add(sh.error("param-bad", "password too short", {info: req.body.password}));
     return cb(1);
   }
 
@@ -348,13 +347,14 @@ exports.downgrade = function (req, res, cb) {
 };
 
 exports.create = function (req, res, cb) {
-  var email = sanitize(req.body.email).trim();
-  var password = sanitize(req.body.password).trim();
-  try {
-    check(email, "invalid email address").isEmail();
-    check(password, "password too short").len(6);
-  } catch (e) {
-    res.add(sh.error("param-bad", e.message, {info: e.message}));
+  var email = validator.trim(req.body.email);
+  var password = validator.trim(req.body.password);
+  if (!validator.isEmail(email)) {
+    res.add(sh.error("param-bad", "invalid email address", {info: req.body.email}));
+    return cb(1);
+  }
+  if (!validator.isLength(password, 6)) {
+    res.add(sh.error("param-bad", "password too short", {info: req.body.password}));
     return cb(1);
   }
 
@@ -396,11 +396,14 @@ exports.create = function (req, res, cb) {
 };
 
 exports.reset = function (req, res, cb) {
-  var password = sanitize(req.body.password).trim();
-  try {
-    check(password, "password too short").len(6);
-  } catch (e) {
-    res.add(sh.error("param-bad", e.message, {info: e.message}));
+  var email = validator.trim(req.body.email);
+  var password = validator.trim(req.body.password);
+  if (!validator.isEmail(email)) {
+    res.add(sh.error("param-bad", "invalid email address", {info: req.body.email}));
+    return cb(1);
+  }
+  if (!validator.isLength(password, 6)) {
+    res.add(sh.error("param-bad", "password too short", {info: req.body.password}));
     return cb(1);
   }
 
@@ -450,11 +453,9 @@ exports.reset = function (req, res, cb) {
 };
 
 exports.requestReset = function (req, res, cb) {
-  var email = sanitize(req.body.email).trim();
-  try {
-    check(email, "invalid email address").isEmail();
-  } catch (e) {
-    res.add(sh.error("param-bad", e.message, {info: e.message}));
+  var email = validator.trim(req.body.email);
+  if (!validator.isEmail(email)) {
+    res.add(sh.error("param-bad", "invalid email address", {info: req.body.email}));
     return cb(1);
   }
 
