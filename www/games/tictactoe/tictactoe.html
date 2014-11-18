@@ -112,8 +112,8 @@ function onopen() {
 
     if (Env.gameId !== "0") {
         shellys.call({session: Env.session,
-            batch: [ {cmd: "game.enter", gameId: Env.gameId},
-                {cmd: "game.playing"},
+            batch: [ {cmd: "tictactoe.enter", gameId: Env.gameId},
+                {cmd: "tictactoe.playing"},
                 {cmd: "channel.add", channel: Env.channel, _pt: "foo"}
             ]});
     }
@@ -139,7 +139,7 @@ function onmessage(res) {
         // just show the pass through data as example
         //console.log("handler:", res.event, res._pt);
     }
-    if (res.event == "game.enter") {
+    if (res.event == "tictactoe.enter") {
         setState(res.data);
         return;
     }
@@ -151,18 +151,18 @@ function onmessage(res) {
         }
         return;
     }
-    if (res.event === "game.status") {
+    if (res.event === "tictactoe.status") {
         if (res.data.gameId != Env.gameId && res.data.whoTurn === Env.user.oid) {
             updateMyTurns(res.data.gameId, res.data);
         }
     }
-    if (res.event == "game.turn"
-            || res.event == "game.over"
-            || res.event == "game.reset") {
+    if (res.event == "tictactoe.turn"
+            || res.event == "tictactoe.over"
+            || res.event == "tictactoe.reset") {
         setState(res.data);
         return;
     }
-    if (res.event == "game.playing") {
+    if (res.event == "tictactoe.playing") {
         setMyTurns(res.data);
         return;
     }
@@ -182,11 +182,11 @@ function init() {
         var id = $(this).attr("id");
         var x = id.slice(1, 2);
         var y = id.slice(3, 4);
-        sendCmd("game.turn", {gameId: Env.gameId, move: {x: x, y: y}})
+        sendCmd("tictactoe.turn", {gameId: Env.gameId, move: {x: x, y: y}})
     });
 
     $("#gameReset").click(function () {
-        sendCmd("game.reset", {gameId: Env.gameId});
+        sendCmd("tictactoe.reset", {gameId: Env.gameId});
     });
 
     commInit();

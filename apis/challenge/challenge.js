@@ -133,7 +133,7 @@ Challenge.accept = function (req, res, cb) {
       res.add(sh.error("challenge-remove", "unable to remove challenge"), {err: err, data: data});
       return cb(err);
     }
-    req.body.cmd = "game.create";     // change the command so we can forward
+    req.body.cmd = gameName + ".create";     // change the command so we can forward
     req.body.name = gameName;
     req.body.players = [req.session.uid, fromUid];
     shcall.make(req, res, _w(cb, function (error) {

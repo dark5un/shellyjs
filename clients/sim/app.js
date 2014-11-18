@@ -36,7 +36,7 @@ var gRunCount = 0;
  */
 function reset(cb) {
   var reqData = _.clone(reqTpl1);
-  reqData.cmd = "game.reset";
+  reqData.cmd = "tictactoe.reset";
   request.post(host + "/api")
     .send(reqData)
     .set("Accept", "application/json")
@@ -55,7 +55,7 @@ function reset(cb) {
  */
 function join(reqTpl, cb) {
   var reqData = _.clone(reqTpl);
-  reqData.cmd = "game.join";
+  reqData.cmd = "tictactoe.join";
   request.post(host + "/api")
     .send(reqData)
     .set("Accept", "application/json")
@@ -79,7 +79,7 @@ function join(reqTpl, cb) {
 function move(tpl, x, y, cb) {
   console.log("move:", x, y);
   var reqData = _.clone(tpl);
-  reqData.cmd = "game.turn";
+  reqData.cmd = "tictactoe.turn";
   reqData.move = {x: x, y: y};
   request.post(host + "/api")
     .send(reqData)
@@ -119,7 +119,7 @@ function moveUntilEnd(tpl, moves, cb) {
       moves.push(newMove[0]);
     }
     // if win stop
-    if (res.event === "game.over") {
+    if (res.event === "tictactoe.over") {
       gStats[res.data.state.winner] += 1;
       console.log("game over");
       cb();
@@ -151,7 +151,7 @@ function init(cb) {
           reqTpl2.uid = res.body.data.session.split(":")[1];
           gStats[reqTpl2.uid] = 0;
           console.log("login:", res.body.data.email, reqTpl2.uid);
-          st.call({cmd: "game.create", name: "tictactoe", session: reqTpl1.session},
+          st.call({cmd: "tictactoe.create", name: "tictactoe", session: reqTpl1.session},
             function (err, res) {
               console.log("game created:", res.body.data.oid);
               reqTpl1.gameId = res.body.data.oid;

@@ -8,7 +8,9 @@ global.CDEF("EMAIL_SENDTO", "scott@lgdales.com");
 //global.CDEF("LOG_CONSOLE_OPTS", { level: "debug", colorize: true, timestamp: false });
 global.CDEF("LOG_MODULES", {"shelly": 1,
   "locate": 0,
-  "shcall": 0,
+  "shgamebase": 1,
+  "connect4": 1,
+  "shcall": 1,
   "rest": 1,
   "send": 0,
   "notify": 0,

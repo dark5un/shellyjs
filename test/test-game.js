@@ -17,11 +17,11 @@ describe("module game", function () {
     });
   });
 
-  describe("CMD game.create", function () {
+  describe("CMD tictactoe.create", function () {
     it("respond with valid game", function (done) {
-      st.userCall({cmd: "game.create", name: "tictactoe"},
+      st.userCall({cmd: "tictactoe.create", name: "tictactoe"},
         function (err, res) {
-          res.body.should.have.property("event", "game.create");
+          res.body.should.have.property("event", "tictactoe.create");
           res.body.data.should.have.property("name", "tictactoe");
           res.body.data.should.have.property("oid");
           res.body.data.should.have.property("state");
@@ -43,11 +43,11 @@ describe("module game", function () {
     });
   });
 
-  describe("CMD game.reset", function () {
+  describe("CMD tictactoe.reset", function () {
     it("respond with valid game", function (done) {
-      st.userCall({cmd: "game.reset", gameId: gCurrentGame},
+      st.userCall({cmd: "tictactoe.reset", gameId: gCurrentGame},
         function (err, res) {
-          res.body.should.have.property("event", "game.reset");
+          res.body.should.have.property("event", "tictactoe.reset");
           res.body.data.should.have.property("name", "tictactoe");
           res.body.data.should.have.property("oid");
           res.body.data.should.have.property("state");
@@ -56,21 +56,21 @@ describe("module game", function () {
     });
   });
 
-  describe("CMD game.playing", function () {
+  describe("CMD tictactoe.playing", function () {
     it("list games user is playing", function (done) {
-      st.userCall({cmd: "game.playing"},
+      st.userCall({cmd: "tictactoe.playing"},
         function (err, res) {
-          res.body.should.have.property("event", "game.playing");
+          res.body.should.have.property("event", "tictactoe.playing");
           done();
         });
     });
   });
 
-  describe("CMD game.list", function () {
+  describe("CMD tictactoe.list", function () {
     it("list games available to user", function (done) {
-      st.userCall({cmd: "game.list"},
+      st.userCall({cmd: "tictactoe.list"},
         function (err, res) {
-          res.body.should.have.property("event", "game.list");
+          res.body.should.have.property("event", "tictactoe.list");
           done();
         });
     });

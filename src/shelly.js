@@ -130,12 +130,6 @@ shelly.start = function (config, cb) {
       return cb(1);
     }
 
-    if (global.C.CLUSTER_AUTO_GAME_MATCHER) {
-      // add workers for game matchers (global.games set in cluster.init
-      _.each(global.games, function (info, gameName) {
-        global.C.CLUSTER["matcher-" + gameName] = {src: "/lib/shmatcher.js", num: global.C.CLUSTER_NUM_MATCHER, args: [gameName]};
-      });
-    }
     if (cluster.isMaster) {
       shlog.system("shelly", "loaded:", new Date());
       shlog.system("shelly", "server:", global.server);
@@ -144,16 +138,16 @@ shelly.start = function (config, cb) {
       _.each(global.C.CLUSTER, function (info, name) {
         var i = 0;
         for (i = 0; i < info.num; i += 1) {
-          var p = cluster.fork({WTYPE: name});
+          var p = cluster.fork({WTYPE: name, SRC: info.src, ARGS: JSON.stringify(info.args)});
           p.on("message", onWorkerMessage);
         }
       });
     } else {
       process.title = "shelly - " + process.env.WTYPE;
-      shlog.info("shelly", "starting:", process.env.WTYPE);
       var workerInfo = global.C.CLUSTER[process.env.WTYPE];
-      gWorkerModule = require(global.C.BASE_DIR + workerInfo.src);
-      gWorkerModule.start.apply(gWorkerModule, workerInfo.args);
+      shlog.info("shelly", "starting:", process.env.WTYPE, process.env.SRC, process.env.ARGS);
+      gWorkerModule = require(global.C.BASE_DIR + process.env.SRC);
+      gWorkerModule.start.apply(gWorkerModule, JSON.parse(process.env.ARGS));
     }
   });
 

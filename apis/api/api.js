@@ -25,12 +25,17 @@ exports.getInfo = function (fn, cb) {
   m.desc = "";
   m.functions = {};
 
-  sh.require(fn, function (err, api) {
+  sh.require(fn, function (err, Obj) {
     if (err) {
       m.error = 100;
-      m.message = api;
+      m.message = Obj;
       return cb(1, m);
     }
+    var api = Obj;
+    if (_.isFunction(Obj)) { // handle objects instead of module functions
+      api = new Obj();
+    }
+
     if (!_.isUndefined(api.desc)) {
       m.desc = api.desc;
     }

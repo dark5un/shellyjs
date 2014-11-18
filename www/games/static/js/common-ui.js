@@ -133,7 +133,7 @@ function setLobbyGames(gameList) {
     $newGame.find("#myGameRemove").click(function (event) {
       $(event.target).parent().remove();
       var data = clone(Env.baseParams);
-      data.cmd = "game.leave";
+      data.cmd = $(this).parent().attr("gameName") + ".leave";
       data.gameId = $(this).parent().attr("gameId");
       shellys.call(data);
     });
@@ -167,7 +167,7 @@ function updateMyTurns(gameId, game) {
   $newGame.find("#myGameRemove").click(function (event) {
     $(event.target).parent().remove();
     var data = clone(Env.baseParams);
-    data.cmd = "game.leave";
+    data.cmd = $(this).parent().attr("gameName") + ".leave";
     data.gameId = $(this).parent().attr("gameId");
     shellys.call(data);
   });

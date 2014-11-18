@@ -28,7 +28,6 @@ global.CDEF("CLUSTER_NUM_TCP", 1);
 global.CDEF("CLUSTER_NUM_REST", 1);
 global.CDEF("CLUSTER_NUM_ADMIN", 1);
 global.CDEF("CLUSTER_NUM_GAMES", 1);
-global.CDEF("CLUSTER_NUM_MATCHER", 1);
 global.CDEF("CLUSTER_NUM_MAILER", 1);
 global.CDEF("CLUSTER", {
   "socket": {src: "/src/socket.js", num: global.C.CLUSTER_NUM_SOCKET, args: ["websocket"]},
@@ -38,7 +37,6 @@ global.CDEF("CLUSTER", {
   "games": {src: "/src/games.js", num: global.C.CLUSTER_NUM_GAMES, args: null},
   "mailer": {src: "/lib/shmailer.js", num: global.C.CLUSTER_NUM_MAILER, args: null}
 });
-global.CDEF("CLUSTER_AUTO_GAME_MATCHER", true); // auto adds matcher processes per game
 
 // logs: level = system, error, info, debug
 global.CDEF("LOG_CONSOLE_OPTS", { level: "info", colorize: true, timestamp: false });
@@ -93,6 +91,9 @@ global.CDEF("EMAIL_TRANSPORT_SERVICE", {service: "Yahoo", auth: {user: "shellyjs
 
 // location of server uuid that identifies server in cluster
 global.CDEF("SERVER_TAG_FN", global.C.CONFIG_DIR + "/server.json");
+
+// directory for core modules
+global.CDEF("CORE_API_DIR", global.C.BASE_DIR + "/apis");
 
 // directory for any external module added to system
 global.CDEF("APP_API_DIR", global.C.BASE_DIR + "/example/apis");

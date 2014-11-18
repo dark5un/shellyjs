@@ -92,8 +92,8 @@ function showGameOver(msg) {
 function onopen() {
     if (Env.gameId !== "0") {
         shellys.call({session: Env.session,
-            batch: [ {cmd: "game.enter", gameId: Env.gameId},
-                {cmd: "game.playing"},
+            batch: [ {cmd: "test.enter", gameId: Env.gameId},
+                {cmd: "test.playing"},
                 {cmd: "channel.add", channel: "game:" + Env.gameId, _pt: "foo"}
             ]});
     }
@@ -119,7 +119,7 @@ function onmessage(res) {
         // just show the pass through data as example
         //console.log("handler:", res.event, res._pt);
     }
-    if (res.event == "game.enter") {
+    if (res.event == "test.enter") {
         setState(res.data);
         return;
     }
@@ -131,13 +131,13 @@ function onmessage(res) {
         }
         return;
     }
-    if (res.event === "game.status") {
+    if (res.event === "test.status") {
         setTurns(res.data.whoTurn);
         if (res.data.gameId != Env.gameId && res.data.whoTurn === Env.user.oid) {
             updateMyTurns(res.data.gameId, res.data);
         }
     }
-    if (res.event === "game.turn") {
+    if (res.event === "test.turn") {
         hideAllMessages();
         var playerName = "you";
         if (res.data.lastId !== Env.user.oid) {
@@ -146,12 +146,12 @@ function onmessage(res) {
         showInfo(playerName + " guessed " + res.data.guess);
         return;
     }
-    if (res.event == "game.over"
-            || res.event == "game.reset") {
+    if (res.event == "test.over"
+            || res.event == "test.reset") {
         setState(res.data);
         return;
     }
-    if (res.event == "game.playing") {
+    if (res.event == "test.playing") {
         setMyTurns(res.data);
         return;
     }
@@ -168,12 +168,12 @@ function init() {
     }, false);
 
     $("#gameReset").click(function () {
-        sendCmd("game.reset", {gameId: Env.gameId});
+        sendCmd("test.reset", {gameId: Env.gameId});
     });
 
     $("#gameGuessBtn").click(function () {
         var guess = $("#gameGuess").val();
-        sendCmd("game.turn", {gameId: Env.gameId, guess: guess});
+        sendCmd("test.turn", {gameId: Env.gameId, guess: guess});
     });
 
     commInit();

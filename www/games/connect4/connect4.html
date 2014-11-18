@@ -181,7 +181,7 @@
                 showError(msg.message);
                 return;
             }
-            if (msg.event === "game.turn") {
+            if (msg.event === "connect4.turn") {
                 var move = msg.data.move;
                 if (Env.user.oid !== msg.data.uid) { // ignore our own moves
                     gBoard[move.x][move.y] = msg.data.color;
@@ -189,7 +189,7 @@
                 }
                 return;
             }
-            if (msg.event === "game.status") {
+            if (msg.event === "connect4.status") {
                 if(msg.data.gameId === Env.gameId) {
                     setWhoTurn(msg.data.whoTurn);
                 } else if (msg.data.whoTurn === Env.user.oid) {
@@ -197,21 +197,21 @@
                 }
                 return;
             }
-            if (msg.event == "game.playing") {
+            if (msg.event == "connect4.playing") {
                 setMyTurns(msg.data);
                 return;
             }
-            if (msg.event === "game.enter") {
+            if (msg.event === "connect4.enter") {
                 resetBoard(msg);
                 return;
             }
-            if (msg.event === "game.over") {
+            if (msg.event === "connect4.over") {
                 setTimeout(function () { // simple delay for fall
                     checkOver(msg.data);
                 }, 2000);
                 return;
             }
-            if (msg.event === "game.reset") {
+            if (msg.event === "connect4.reset") {
                 resetBoard(msg);
                 return;
             }
@@ -227,8 +227,8 @@
 
             shellys.call({session: Env.session,
                 batch: [{cmd: "user.get"},
-                    {cmd: "game.enter", gameId: Env.gameId},
-                    {cmd: "game.playing"},
+                    {cmd: "connect4.enter", gameId: Env.gameId},
+                    {cmd: "connect4.playing"},
                     {cmd: "channel.add", channel: Env.channel}
                 ]});
         }
@@ -241,7 +241,7 @@
 
         function pieceDrop(turn, column, row) {
             // 1===red, 0===yellow
-            sendCmd("game.turn", {gameId: Env.gameId, move: {x: column, y: row}});
+            sendCmd("connect4.turn", {gameId: Env.gameId, move: {x: column, y: row}});
         }
 
         $(init);
@@ -250,7 +250,7 @@
             $("#shSubTitle").text("Connect 4");
 
             $("#gameReset").click(function () {
-                sendCmd("game.reset", {gameId: Env.gameId});
+                sendCmd("connect4.reset", {gameId: Env.gameId});
             });
 
             commInit();

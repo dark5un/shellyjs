@@ -44,7 +44,7 @@
                 addConfig("RestService", "REST_URL", config);
                 addConfig("RestService", "REST_PORT", config);
 
-                addConfig("TcpService", "CLUSTER_NUM_GAMES", config);
+                addConfig("TcpService", "CLUSTER_NUM_TCP", config);
                 addConfig("TcpService", "TCP_PORT", config);
                 addConfig("TcpService", "HEART_BEAT", config);
 
@@ -53,7 +53,6 @@
                 addConfig("GamesService", "GAMES_PORT", config);
 
                 addConfig("ClusterSettings", "CLUSTER_URL", config)
-                addConfig("ClusterSettings", "CLUSTER_AUTO_GAME_MATCHER", config)
                 for(key in config.CLUSTER) {
                     addConfig("ClusterSettings", key, config.CLUSTER)
                 }
@@ -157,6 +156,15 @@
             <div class="gameBoxHeaderDiv">Matcher:</div>
             <div class="gameBoxInnerDiv">
                 <table id="MatcherSettings" class="table-condensed">
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row" style="margin-bottom: 10px;">
+        <div class="gameBoxDiv span12">
+            <div class="gameBoxHeaderDiv">Cluster Info:</div>
+            <div class="gameBoxInnerDiv">
+                <table id="ClusterSettings" class="table-condensed">
                 </table>
             </div>
         </div>
